@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16
+    container_name: agiliza_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: agiliza_chat
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d agiliza_chat"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: agiliza_backend
+    command: npm run dev
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/agiliza_chat?schema=public
+      JWT_SECRET: change_me_in_prod
+      PORT: 3333
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  dbdata:

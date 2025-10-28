@@ -1,24 +1,27 @@
-FROM node:20-alpine
-
 # Traduzir os comentários sobre a dockerização após a finalização do projeto
 
-# Define o diretório de trabalho dentro do container
+# imagem base compatível com Prisma e OpenSSL
+FROM node:20-slim
+
+# instala openssl e dependências do sistema
+RUN apt-get update -y && apt-get install -y openssl
+
+# define diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de manifesto primeiro (para cache mais eficiente)
+# copia e instala dependências
 COPY package*.json ./
-
-# Instala as dependências
 RUN npm ci
 
-# Copia o restante do código-fonte
+# copia o restante do códigodocker compose build backend --no-cache
 COPY . .
 
-# Gera o client do Prisma
+# gera o Prisma Client dentro do container
 RUN npx prisma generate
 
-# Expõe a porta do Fastify
+# expõe a porta do Fastify
 EXPOSE 3333
 
-# Comando padrão para rodar o servidor
+# comando padrão de inicialização
 CMD ["npm", "run", "dev"]
+
