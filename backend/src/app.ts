@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import { prismaPlugin } from "./plugins/prisma";
 import { rootRoutes } from "./routes/root.routes";
 import { authRoutes } from "./routes/auth.routes";
+import { profileRoutes } from './routes/profiles.routes';
 
 export function buildApp() {
   const app = Fastify({ logger: true });
@@ -11,6 +12,7 @@ export function buildApp() {
   app.register(prismaPlugin);
   app.register(rootRoutes);
   app.register(authRoutes);
+  app.register(profileRoutes);
 
   return app;
 }
