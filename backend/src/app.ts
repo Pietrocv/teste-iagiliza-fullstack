@@ -4,6 +4,8 @@ import { prismaPlugin } from "./plugins/prisma";
 import { rootRoutes } from "./routes/root.routes";
 import { authRoutes } from "./routes/auth.routes";
 import { profileRoutes } from './routes/profiles.routes';
+import { chatRoutes } from './routes/chat.routes';
+
 
 export function buildApp() {
   const app = Fastify({ logger: true });
@@ -13,6 +15,6 @@ export function buildApp() {
   app.register(rootRoutes);
   app.register(authRoutes);
   app.register(profileRoutes);
-
+  app.register(chatRoutes);
   return app;
 }
