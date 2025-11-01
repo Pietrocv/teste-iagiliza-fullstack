@@ -29,12 +29,18 @@ export async function authRoutes(app: FastifyInstance) {
         select: { id: true, name: true, email: true },
       });
 
-      return reply.status(201).send({ message: "User created successfully", user });
+      const token = generateToken({ id: user.id, email: user.email });
+
+      return reply.status(201).send({
+        message: "User created successfully",
+        token,
+        user,
+      });
     } catch (error) {
-       console.error("REGISTER ERROR:", error);
-        return reply.status(400).send({
-            error: error instanceof Error ? error.message : String(error)
-     });
+      console.error("REGISTER ERROR:", error);
+      return reply.status(400).send({
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   });
 
@@ -64,10 +70,10 @@ export async function authRoutes(app: FastifyInstance) {
         user: { id: user.id, name: user.name, email: user.email },
       });
     } catch (error) {
-        console.error("LOGIN ERROR:", error);
-        return reply.status(400).send({
-            error: error instanceof Error ? error.message : String(error),
-        });
+      console.error("LOGIN ERROR:", error);
+      return reply.status(400).send({
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   });
 }

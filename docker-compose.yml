@@ -26,12 +26,33 @@ services:
       PORT: 3333
     ports:
       - "3333:3333"
+      - "5555:5555"
     volumes:
       - ./backend:/app
       - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: agiliza_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+    - ./frontend:/app              
+    - /app/node_modules            
+    depends_on:
+      - backend
+    networks:
+      - app_net
+    environment:
+      - VITE_API_URL=http://backend:3333
+
+networks:
+  app_net:
+    driver: bridge
+
 
 volumes:
   dbdata:
