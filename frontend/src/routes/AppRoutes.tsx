@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ChatPage from "../pages/ChatPage";
 import Landing from "../pages/Landing";
+import ProfilePage from "../pages/ProfilePage";
 
 
 export default function AppRoutes() {
@@ -15,6 +16,7 @@ export default function AppRoutes() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/profile" element={<ProfilePage/>} />
       </Routes>
     </BrowserRouter>
   );

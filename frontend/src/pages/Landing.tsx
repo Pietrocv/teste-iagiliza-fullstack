@@ -50,6 +50,13 @@ export default function Landing() {
       >
         Entrar no Chat 💬
       </button>
+      <button
+        onClick={() => navigate("/profile")}
+        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition mb-4"
+      >
+        Meu Perfil 👨‍🦰
+      </button>
+     
 
       <button
         onClick={handleLogout}
