@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Plus, LogOut, Send, MessageSquare } from "lucide-react";
 
 interface Message {
   id: string;
@@ -114,37 +118,108 @@ export default function ChatPage() {
     }
   };
 
-  const handleExitChat = () => {
-    navigate("/landing");
-  };
+  const handleExitChat = () => navigate("/landing");
 
   const currentChat = chats.find((c) => c.id === chatId);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <aside className="w-64 bg-gray-800 text-white flex flex-col">
-        <div className="p-4 border-b border-gray-700 flex justify-between items-center">
-          <h2 className="font-bold text-lg">Suas Conversas</h2>
-          <button
-            onClick={handleNewChat}
-            className="bg-blue-500 px-2 py-1 rounded hover:bg-blue-600"
-          >
-            +
-          </button>
+    <div className="flex h-screen bg-gray-50">
+      {/* Chat principal à esquerda */}
+      <div className="flex flex-col w-1/2 border-r">
+        <header className="bg-white border-b p-4 flex justify-between items-center shadow-sm">
+          <div>
+            <h1 className="text-lg font-bold text-blue-700">IAgiliza Chat</h1>
+            {currentChat && (
+              <p className="text-sm text-gray-500">
+                Chat atual:{" "}
+                <span className="font-mono text-gray-700">
+                  {currentChat.id.slice(-6)}
+                </span>
+              </p>
+            )}
+          </div>
+        </header>
+
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-100 space-y-3">
+          {Array.isArray(messages) && messages.length > 0 ? (
+            messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <Card
+                  className={`p-3 rounded-2xl max-w-[70%] ${
+                    msg.role === "user"
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 text-gray-900"
+                  }`}
+                >
+                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  <span className="block text-xs mt-1 opacity-70">
+                    {msg.role === "user" ? user?.name : "IAgiliza"}
+                  </span>
+                </Card>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-400 mt-10">
+              Nenhuma mensagem neste chat.
+            </p>
+          )}
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <form
+          onSubmit={handleSendMessage}
+          className="p-4 bg-white border-t flex items-center gap-2 shadow-md"
+        >
+          <Input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Digite sua mensagem..."
+            className="flex-1"
+          />
+          <Button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+          >
+            <Send className="w-4 h-4" /> Enviar
+          </Button>
+        </form>
+      </div>
+
+      {/* Sidebar agora à direita */}
+      <aside className="w-1/2 bg-gradient-to-b from-blue-700 to-blue-900 text-white flex flex-col shadow-lg">
+        <div className="p-4 border-b border-blue-600 flex justify-between items-center">
+          <h2 className="font-semibold text-base flex items-center gap-2">
+            <MessageSquare className="w-4 h-4" /> Conversas
+          </h2>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full"
+            onClick={handleNewChat}
+          >
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-3">
           {chats.length === 0 ? (
-            <p className="text-center mt-4 text-gray-400">Nenhum chat ainda</p>
+            <p className="text-center mt-6 text-gray-300 text-sm">
+              Nenhum chat
+            </p>
           ) : (
             chats.map((chat) => (
               <button
                 key={chat.id}
                 onClick={() => handleSelectChat(chat.id)}
-                className={`block w-full text-left px-4 py-2 border-b border-gray-700 transition-colors ${
+                className={`w-full text-left px-4 py-2 rounded-lg mb-2 transition-all ${
                   chat.id === chatId
                     ? "bg-blue-600 font-semibold"
-                    : "hover:bg-gray-700"
+                    : "hover:bg-blue-800/70"
                 }`}
               >
                 Chat {chat.id.slice(-4)}
@@ -153,77 +228,13 @@ export default function ChatPage() {
           )}
         </div>
 
-        <button
+        <Button
           onClick={handleExitChat}
-          className="bg-red-600 hover:bg-red-700 text-white p-3 text-center"
+          className="bg-red-600 hover:bg-red-700 text-white rounded-none flex items-center justify-center gap-2 py-3"
         >
-          Sair
-        </button>
+          <LogOut className="w-4 h-4" /> Sair
+        </Button>
       </aside>
-
-      <div className="flex flex-col flex-1">
-        <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-lg font-semibold">Chat - IAgiliza</h1>
-            {currentChat && (
-              <p className="text-sm opacity-80">
-                Chat atual: <span className="font-mono">{currentChat.id.slice(-6)}</span>
-              </p>
-            )}
-          </div>
-        </header>
-
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {Array.isArray(messages) && messages.length > 0 ? (
-            messages
-              .filter((msg): msg is Message => !!msg && !!msg.role)
-              .map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  <div
-                    className={`p-3 rounded-lg max-w-xs ${
-                      msg.role === "user"
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-300 text-gray-800"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.content}</p>
-                    <span className="block text-xs mt-1 opacity-70">
-                      {msg.role === "user" ? user?.name : "IAgiliza"}
-                    </span>
-                  </div>
-                </div>
-              ))
-          ) : (
-            <p className="text-center text-gray-400">
-              Nenhuma mensagem neste chat
-            </p>
-          )}
-        </div>
-
-        <form
-          onSubmit={handleSendMessage}
-          className="p-4 bg-white border-t flex gap-2"
-        >
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Digite sua mensagem..."
-            className="flex-1 border rounded px-3 py-2"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Enviar
-          </button>
-        </form>
-      </div>
     </div>
   );
 }
