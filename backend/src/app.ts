@@ -5,6 +5,7 @@ import { rootRoutes } from "./routes/root.routes";
 import { authRoutes } from "./routes/auth.routes";
 import { profileRoutes } from './routes/profiles.routes';
 import { chatRoutes } from './routes/chat.routes';
+import { messageRoutes } from "./routes/message.routes";
 
 
 export function buildApp() {
@@ -16,5 +17,6 @@ export function buildApp() {
   app.register(authRoutes);
   app.register(profileRoutes);
   app.register(chatRoutes);
+  app.register(messageRoutes);
   return app;
 }
