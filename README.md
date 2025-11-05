@@ -1,122 +1,141 @@
-# Teste Técnico — Desenvolvedor(a) Fullstack
+# 🚀 IAgiliza – Full Stack Chat App
 
-Bem-vindo(a)!
-Este teste avalia sua capacidade de desenvolver uma aplicação Fullstack com TypeScript.
-
----
-
-## Stack requisitada
-
-### Backend
-- Fastify
-- Prisma ORM
-- Zod
-- TypeScript
-- Banco: PostgreSQL
-
-### Frontend
-- React
-- Vite
-- TypeScript
-- TailwindCSS
-- Axios
-- Zod
+Aplicação **Full Stack** desenvolvida como **teste técnico**, com autenticação JWT, múltiplos chats por usuário e respostas automáticas simuladas de uma IA.  
+O projeto foi construído com foco em **organização**, **boas práticas** e **integração total entre frontend e backend via Docker**.
 
 ---
 
-## Desafio: Chat simples com IA simulada
+## 🧭 Visão Geral
 
-Você deve criar um pequeno chat entre o usuário e uma IA simulada.
-A IA não precisa ser real, o backend pode retornar respostas simples ou aleatórias.
+O **IAgiliza** é um aplicativo que integra autenticação, chats independentes e armazenamento persistente de mensagens, com interface moderna e responsiva.
 
-O usuário precisa:
-1. Cadastrar-se e fazer login
-2. Ter sua sessão armazenada localmente para manter o login
-3. Enviar e visualizar mensagens da conversa
-4. Receber respostas da IA simulada
-4. Editar seus dados (nome, email)
+**Stack principal:**
+- **Backend:** Fastify + Prisma + PostgreSQL + JWT  
+- **Frontend:** React + Vite + TailwindCSS + Shadcn UI  
+- **Infraestrutura:** Docker + Docker Compose  
 
 ---
 
-## Funcionalidades obrigatórias
+## 🧱 Funcionalidades
 
-### Backend
-- Rotas:
-  - POST /register — cria novo usuário
-  - POST /login — autentica usuário
-  - GET /me — retorna dados do usuário logado
-  - PATCH /me — atualiza nome/email do usuário
-  - GET /messages — retorna histórico do usuário logado
-  - POST /message — envia nova mensagem e retorna resposta da IA
-- Validação de entrada e saída com Zod
-- ORM com Prisma
-- Persistência em PostgreSQL
-- Autenticação com JWT simples
-- Tipagem completa em TypeScript
+### 🖥️ Backend (Fastify + Prisma)
 
-A IA pode responder com algo simples, por exemplo:
+#### 🔐 Autenticação
+- Registro e login de usuários (`/register`, `/login`)
+- Criptografia de senhas com **bcrypt**
+- Geração e validação de **token JWT**
+- Acesso autenticado via **middleware**
 
-- "Interessante! Conte mais.",
-- "Não tenho certeza, mas parece legal!",
-- "Hmm, e se tentássemos outra abordagem?",
-- "Entendi parcialmente. Você pode explicar melhor?"
+#### 💬 Chats e Mensagens
+- `/chats` → cria e lista chats por usuário
+- `/messages` → adiciona novas mensagens e gera resposta automática “fake” da IA
+- Persistência completa no banco PostgreSQL via **Prisma ORM**
+
+#### 🗄️ Banco de Dados
+- Modelos principais: `User`, `Chat`, `Message`
+- Relações 1:N entre usuários, chats e mensagens
 
 ---
 
-### Frontend
-- Páginas:
-  - Login / Cadastro
-  - Chat (lista mensagens + campo de envio)
-  - Perfil (edição de nome/email)
-- Estilização com TailwindCSS
-- Requisições via Axios
-- Validação de formulários com Zod
-- Armazenar informações da sessão (Cookies ou LocalStorage)
-- Mostrar mensagens do usuário e da IA
+### 🌐 Frontend (React + Vite + Tailwind + Shadcn UI)
+
+#### 📄 Páginas Implementadas
+- **Login / Register:** autenticação completa com integração ao backend  
+- **Landing Page:** acesso à área autenticada  
+- **Chat Page:** histórico completo das conversas e respostas da IA  
+- **Profile Page:** exibição e edição de dados do usuário  
+
+#### ⚙️ Funcionalidades
+- Autenticação persistente com **LocalStorage**
+- Requisições via **Axios**
+- Componentização com **Shadcn UI**
+- Layout moderno e responsivo (TailwindCSS)
 
 ---
 
-## O que será avaliado
+## 🐳 Como Rodar com Docker
 
-| Critério | Peso (1-10)|
-|-----------|------|
-| Boas práticas (nomes, pastas, commits) | 4 |
-| Organização do código | 6 |
-| Validação e tratamento de erros | 7 |
-| Uso correto do TypeScript e do Prisma | 8 |
-| Funcionalidade completa (chat, login, perfil) | 9 |
-| Layout funcional com Tailwind | 10 |
-| Explicação do projeto e funcionalidades | 10 |
-
-### Desafios Bônus
-
-| Critério | Peso (1-5)|
-|-----------|------|
-| Escrita do código em inglês | 1 |
-| Implementar tema claro e escuro | 1 |
-| Utilizar componentes ShadcnUI | 2 |
-| Landing page apresentando o "produto" | 3 |
-| Se comunicar via API com alguma LLM | 4 |
-| Permitir que um usuário possua vários chats | 5 |
+### 1️⃣ Clonar o repositório
+```bash
+git clone https://github.com/seuusuario/IAgiliza.git
+cd IAgiliza
+```
 
 ---
 
-## Dicas
+### 2️⃣ Configurar variáveis de ambiente
+Crie um arquivo `.env` dentro da pasta **backend/** com o seguinte conteúdo:
+```bash
+DATABASE_URL="postgresql://postgres:postgres@db:5432/iagiliza"
+JWT_SECRET="sua_chave_jwt_aqui"
+```
 
-- Prefira componentes pequenos e reutilizáveis
-- Tipagem é importante, mas clareza vem primeiro
+E outro arquivo `.env` dentro da pasta **frontend/** com:
+```bash
+VITE_API_URL="http://localhost:3333"
+```
 
----
-
-## Entrega
-
-- A entrega do projeto deve ser feita em até 7 dias após o recebimento do link desse repositório
-- Faça um fork público desse repositório
-- Adicione seu código à medida em que desenvolve
-- Inclua:
-  - Este README atualizado com instruções reais de execução do seu projeto
-  - Todo o código fonte do seu projeto
+Essas variáveis permitem que o backend e o frontend se comuniquem entre si e com o banco de dados PostgreSQL dentro do ambiente Docker.
 
 ---
 
-## **Boa sorte, estamos ansiosos para te receber no time IAgiliza!**
+### 3️⃣ Subir os containers
+```bash
+docker-compose up --build
+```
+
+Esse comando:
+- Cria e inicia os containers do **backend**, **frontend** e **PostgreSQL**
+- Instala dependências automaticamente  
+- Sobe a aplicação com os serviços já integrados
+
+---
+
+### 4️⃣ Acessar a aplicação
+Após o build, a aplicação estará disponível em:
+
+- 🌐 **Frontend:** [http://localhost:5173](http://localhost:5173)  
+- 🧠 **Backend (API):** [http://localhost:3333](http://localhost:3333)
+
+O login e o cadastro já estarão ativos, assim como o fluxo completo de criação de chats e mensagens.
+
+---
+
+### 5️⃣ Rodar migrations (se necessário)
+Se o banco ainda não tiver sido inicializado, rode:
+```bash
+docker exec -it agiliza_backend npx prisma migrate deploy
+```
+
+Isso aplicará o schema do Prisma dentro do container PostgreSQL, garantindo a criação das tabelas `User`, `Chat` e `Message`.
+
+---
+
+### 6️⃣ Comandos úteis
+```bash
+# Parar todos os containers
+docker-compose down
+
+# Reconstruir containers (após alterações)
+docker-compose up --build
+
+# Acessar o terminal do backend
+docker exec -it agiliza_backend sh
+
+# Visualizar o banco de dados no Prisma Studio
+docker exec -it agiliza_backend npx prisma studio
+```
+
+---
+
+### 7️⃣ Estrutura dos serviços Docker
+
+| Serviço   | Descrição                                    | Porta Local |
+|------------|----------------------------------------------|--------------|
+| **backend**  | API Fastify + Prisma + JWT                  | 3333 |
+| **frontend** | Interface React + Vite + Tailwind + Shadcn UI | 5173 |
+| **db**       | Banco PostgreSQL persistido em volume interno | 5432 |
+
+---
+
+Após a inicialização, o **IAgiliza** estará completamente funcional no ambiente Docker, com frontend, backend e banco de dados integrados, prontos para uso e persistência total das informações.
