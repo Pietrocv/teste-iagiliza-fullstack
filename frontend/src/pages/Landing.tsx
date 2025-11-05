@@ -35,35 +35,47 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-gray-800">
-      <h1 className="text-4xl font-bold mb-4">Bem-vindo ao IAgiliza 🚀</h1>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white font-[Inter]">
+      <div className="bg-zinc-900 border border-zinc-800 shadow-2xl rounded-2xl p-10 w-full max-w-md text-center">
+        <div className="flex flex-col items-center space-y-3 mb-8">
+          <img
+            src="https://iagiliza.com.br/imges/icon_IAgiliza.png"
+            alt="IAgiliza Logo"
+            className="w-16 h-16 drop-shadow-md"
+          />
+          <h1 className="text-3xl font-semibold text-white">
+            Bem-vindo ao IAgiliza 🚀
+          </h1>
+          {user && (
+            <p className="text-gray-400 text-sm">
+              Olá <span className="font-medium text-white">{user.name}</span>
+            </p>
+          )}
+        </div>
 
-      {user && (
-        <p className="text-lg mb-6">
-          Logado como <span className="font-semibold">{user.name}</span>
-        </p>
-      )}
+        <div className="flex flex-col space-y-4">
+          <button
+            onClick={() => navigate("/chat")}
+            className="bg-white text-black font-medium py-2 rounded-md hover:bg-gray-200 transition-all"
+          >
+            Entrar no Chat 💬
+          </button>
 
-      <button
-        onClick={() => navigate("/chat")}
-        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition mb-4"
-      >
-        Entrar no Chat 💬
-      </button>
-      <button
-        onClick={() => navigate("/profile")}
-        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition mb-4"
-      >
-        Meu Perfil 👨‍🦰
-      </button>
-     
+          <button
+            onClick={() => navigate("/profile")}
+            className="bg-blue-600 text-white font-medium py-2 rounded-md hover:bg-blue-500 transition-all"
+          >
+            Meu Perfil 👤
+          </button>
 
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-      >
-        Sair
-      </button>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white font-medium py-2 rounded-md hover:bg-red-500 transition-all mt-4"
+          >
+            Sair
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

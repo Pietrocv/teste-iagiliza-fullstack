@@ -15,49 +15,50 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const res = await api.post("/register", { name, email, password });
 
       if (res.status === 201 || res.data?.message === "User created successfully") {
-        setMessage("✅ Usuário criado com sucesso!");
+        setMessage("Usuário criado com sucesso!");
         alert("Cadastro realizado com sucesso! Faça login para continuar.");
         navigate("/login");
       } else {
-        setMessage("⚠️ Falha ao criar usuário. Tente novamente.");
+        setMessage("Falha ao criar usuário. Tente novamente.");
       }
-    } catch (err: any) {
-      console.error("❌ Erro ao registrar:", err);
-      setMessage("❌ Erro ao registrar usuário.");
+    } catch (err) {
+      console.error("Erro ao registrar:", err);
+      setMessage("Erro ao registrar usuário.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 p-4">
-      <Card className="w-full max-w-md shadow-xl border border-gray-100 rounded-2xl bg-white py-8 px-6 text-center">
-        {/* Avatar decorativo */}
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white shadow-md">
-            <UserPlus className="w-10 h-10" />
-          </div>
-        </div>
-
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-green-600">
-            Criar conta
+    <div className="min-h-screen flex items-center justify-center bg-black font-[Inter] text-white">
+      <Card className="w-full max-w-sm bg-zinc-900 border border-zinc-800 shadow-2xl rounded-2xl p-6 text-white">
+        <CardHeader className="text-center mb-4 flex flex-col items-center space-y-3">
+          <img
+            src="https://iagiliza.com.br/imges/icon_IAgiliza.png"
+            alt="IAgiliza Logo"
+            className="w-14 h-14 drop-shadow-md"
+          />
+          <CardTitle className="text-2xl font-semibold text-white">
+            Criar Conta
           </CardTitle>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-gray-300 text-sm">
             Preencha os campos para se cadastrar
           </p>
         </CardHeader>
 
-        <CardContent className="mt-6">
-          <form onSubmit={handleSubmit} className="space-y-5 text-left">
-            <div>
-              <Label htmlFor="name" className="flex items-center gap-2 text-gray-700 mb-1">
-                <User className="w-4 h-4 text-gray-500" /> Nome
+        <CardContent>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col items-center space-y-4 text-white"
+          >
+            <div className="w-72">
+              <Label htmlFor="name" className="text-gray-200 text-sm flex items-center gap-2">
+                <User className="w-4 h-4 text-gray-400" /> Nome
               </Label>
               <Input
                 id="name"
@@ -65,13 +66,14 @@ export default function Register() {
                 placeholder="Seu nome completo"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="mt-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
-            <div>
-              <Label htmlFor="email" className="flex items-center gap-2 text-gray-700 mb-1">
-                <Mail className="w-4 h-4 text-gray-500" /> Email
+            <div className="w-72">
+              <Label htmlFor="email" className="text-gray-200 text-sm flex items-center gap-2">
+                <Mail className="w-4 h-4 text-gray-400" /> Email
               </Label>
               <Input
                 id="email"
@@ -79,13 +81,14 @@ export default function Register() {
                 placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
-            <div>
-              <Label htmlFor="password" className="flex items-center gap-2 text-gray-700 mb-1">
-                <Lock className="w-4 h-4 text-gray-500" /> Senha
+            <div className="w-72">
+              <Label htmlFor="password" className="text-gray-200 text-sm flex items-center gap-2">
+                <Lock className="w-4 h-4 text-gray-400" /> Senha
               </Label>
               <Input
                 id="password"
@@ -93,6 +96,7 @@ export default function Register() {
                 placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -100,7 +104,9 @@ export default function Register() {
             {message && (
               <p
                 className={`text-center text-sm font-medium ${
-                  message.startsWith("✅") ? "text-green-600" : "text-red-600"
+                  message.includes("sucesso")
+                    ? "text-green-400"
+                    : "text-red-400"
                 }`}
               >
                 {message}
@@ -109,20 +115,22 @@ export default function Register() {
 
             <Button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold py-2 mt-4 rounded-lg shadow-md transition-all"
+              className="w-72 mt-2 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-all flex items-center justify-center gap-2"
             >
-              <UserPlus className="w-4 h-4" /> Criar conta
+              <UserPlus className="w-4 h-4" /> Criar Conta
             </Button>
 
-            <div className="text-center text-sm mt-4">
-              <span className="text-gray-600">Já tem conta?</span>{" "}
-              <button
+            <div className="flex flex-col items-center mt-10 space-y-3">
+              <p className="text-gray-300 text-sm tracking-wide">
+                Já tem uma conta?
+              </p>
+              <Button
                 type="button"
                 onClick={() => navigate("/login")}
-                className="text-green-600 hover:underline flex items-center justify-center gap-1 font-medium mx-auto mt-1"
+                className="w-40 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-md transition-all flex items-center justify-center gap-2"
               >
-                <LogIn className="w-4 h-4" /> Fazer login
-              </button>
+                <LogIn className="w-4 h-4" /> Fazer Login
+              </Button>
             </div>
           </form>
         </CardContent>

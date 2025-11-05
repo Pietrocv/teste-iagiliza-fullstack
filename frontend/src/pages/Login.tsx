@@ -1,19 +1,18 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { LogIn, Mail, Lock, UserPlus } from "lucide-react";
 
-export default function Login() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -25,91 +24,83 @@ export default function Login() {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-
-      navigate("/landing");
+      navigate("/chat");
     } catch (err) {
-      console.error(err);
       setError("Credenciais inválidas. Tente novamente.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 p-4">
-      <Card className="w-full max-w-md shadow-xl border border-gray-100 rounded-2xl bg-white py-8 px-6 text-center">
-        {/* Avatar decorativo */}
-        <div className="flex justify-center mb-6">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white shadow-md">
-            <LogIn className="w-10 h-10" />
-          </div>
-        </div>
-
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-blue-600">
-            Bem-vindo de volta
+    <div className="min-h-screen flex items-center justify-center bg-black font-[Inter]">
+      <Card className="w-full max-w-sm bg-zinc-900 border border-zinc-800 shadow-2xl rounded-2xl p-6 text-white">
+        <CardHeader className="text-center mb-4 flex flex-col items-center space-y-3">
+          <img
+            src="https://iagiliza.com.br/imges/icon_IAgiliza.png"
+            alt="IAgiliza Logo"
+            className="w-14 h-14 drop-shadow-md"
+          />
+          <CardTitle className="text-2xl font-semibold text-white">
+            Bem-vindo ao IAgiliza
           </CardTitle>
-          <p className="text-gray-500 text-sm mt-1">
-            Faça login para continuar
-          </p>
+          <p className="text-gray-300 text-sm">Faça login para continuar</p>
         </CardHeader>
 
-        <CardContent className="mt-6">
-          <form onSubmit={handleSubmit} className="space-y-5 text-left">
-            <div>
-              <Label
-                htmlFor="email"
-                className="flex items-center gap-2 text-gray-700 mb-1"
-              >
-                <Mail className="w-4 h-4 text-gray-500" /> Email
+        <CardContent>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col items-center space-y-4 text-white"
+          >
+            <div className="w-72">
+              <Label htmlFor="email" className="text-gray-200 text-sm">
+                E-mail
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="seuemail@email.com"
+                className="mt-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
-            <div>
-              <Label
-                htmlFor="password"
-                className="flex items-center gap-2 text-gray-700 mb-1"
-              >
-                <Lock className="w-4 h-4 text-gray-500" /> Senha
+            <div className="w-72">
+              <Label htmlFor="password" className="text-gray-200 text-sm">
+                Senha
               </Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="********"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="mt-1 bg-zinc-800 border-zinc-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
 
             {error && (
-              <p className="text-red-500 text-sm font-medium text-center">
-                {error}
-              </p>
+              <p className="text-red-400 text-sm text-center w-72">{error}</p>
             )}
 
             <Button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-semibold py-2 mt-4 rounded-lg shadow-md transition-all"
+              className="w-72 mt-2 bg-white hover:bg-gray-200 text-black font-medium rounded-md transition-all"
             >
-              <LogIn className="w-4 h-4" /> Entrar
+              Entrar
             </Button>
 
-            <div className="text-center text-sm mt-4">
-              <span className="text-gray-600">Não tem conta?</span>{" "}
-              <button
-                type="button"
+            <div className="flex flex-col items-center mt-10 space-y-3">
+              <p className="text-gray-300 text-sm tracking-wide">
+                Não tem uma conta ainda?
+              </p>
+              <Button
                 onClick={() => navigate("/register")}
-                className="text-blue-600 hover:underline flex items-center justify-center gap-1 font-medium mx-auto mt-1"
+                className="w-40 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-md transition-all"
               >
-                <UserPlus className="w-4 h-4" /> Criar conta
-              </button>
+                Cadastre-se
+              </Button>
             </div>
           </form>
         </CardContent>

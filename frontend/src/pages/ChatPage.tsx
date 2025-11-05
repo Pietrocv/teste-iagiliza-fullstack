@@ -123,25 +123,26 @@ export default function ChatPage() {
   const currentChat = chats.find((c) => c.id === chatId);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Chat principal à esquerda */}
-      <div className="flex flex-col w-1/2 border-r">
-        <header className="bg-white border-b p-4 flex justify-between items-center shadow-sm">
-          <div>
-            <h1 className="text-lg font-bold text-blue-700">IAgiliza Chat</h1>
-            {currentChat && (
-              <p className="text-sm text-gray-500">
-                Chat atual:{" "}
-                <span className="font-mono text-gray-700">
-                  {currentChat.id.slice(-6)}
-                </span>
-              </p>
-            )}
+    <div className="flex h-screen bg-black text-white">
+      <div className="w-3/4 flex flex-col">
+        <header className="bg-zinc-900 border-b border-zinc-800 p-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <img
+              src="https://iagiliza.com.br/imges/icon_IAgiliza.png"
+              alt="IAgiliza Logo"
+              className="w-7 h-7"
+            />
+            <h1 className="text-lg font-semibold">IAgiliza Chat</h1>
           </div>
+          {currentChat && (
+            <p className="text-xs text-gray-400">
+              Chat <span className="font-mono">{currentChat.id.slice(-6)}</span>
+            </p>
+          )}
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-100 space-y-3">
-          {Array.isArray(messages) && messages.length > 0 ? (
+        <div className="flex-1 overflow-y-auto p-6 space-y-3 bg-zinc-950">
+          {messages.length > 0 ? (
             messages.map((msg) => (
               <div
                 key={msg.id}
@@ -153,18 +154,18 @@ export default function ChatPage() {
                   className={`p-3 rounded-2xl max-w-[70%] ${
                     msg.role === "user"
                       ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-900"
+                      : "bg-zinc-800 text-gray-200"
                   }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                  <span className="block text-xs mt-1 opacity-70">
+                  <span className="block text-xs mt-1 opacity-60">
                     {msg.role === "user" ? user?.name : "IAgiliza"}
                   </span>
                 </Card>
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-400 mt-10">
+            <p className="text-center text-gray-500 mt-10">
               Nenhuma mensagem neste chat.
             </p>
           )}
@@ -172,14 +173,14 @@ export default function ChatPage() {
 
         <form
           onSubmit={handleSendMessage}
-          className="p-4 bg-white border-t flex items-center gap-2 shadow-md"
+          className="p-4 bg-zinc-900 border-t border-zinc-800 flex items-center gap-2"
         >
           <Input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Digite sua mensagem..."
-            className="flex-1"
+            className="flex-1 bg-zinc-800 text-white border-zinc-700 placeholder-gray-400 focus:ring-2 focus:ring-blue-600"
           />
           <Button
             type="submit"
@@ -190,14 +191,12 @@ export default function ChatPage() {
         </form>
       </div>
 
-      {/* Sidebar agora à direita */}
-      <aside className="w-1/2 bg-gradient-to-b from-blue-700 to-blue-900 text-white flex flex-col shadow-lg">
-        <div className="p-4 border-b border-blue-600 flex justify-between items-center">
-          <h2 className="font-semibold text-base flex items-center gap-2">
+      <aside className="w-1/4 bg-zinc-900 border-l border-zinc-800 flex flex-col">
+        <div className="p-4 border-b border-zinc-800 flex justify-between items-center">
+          <h2 className="font-medium text-sm flex items-center gap-2">
             <MessageSquare className="w-4 h-4" /> Conversas
           </h2>
           <Button
-            variant="secondary"
             size="icon"
             className="bg-blue-600 hover:bg-blue-700 text-white rounded-full"
             onClick={handleNewChat}
@@ -206,9 +205,9 @@ export default function ChatPage() {
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-3">
+        <div className="flex-1 overflow-y-auto p-3 space-y-2">
           {chats.length === 0 ? (
-            <p className="text-center mt-6 text-gray-300 text-sm">
+            <p className="text-center mt-6 text-gray-500 text-sm">
               Nenhum chat
             </p>
           ) : (
@@ -216,10 +215,10 @@ export default function ChatPage() {
               <button
                 key={chat.id}
                 onClick={() => handleSelectChat(chat.id)}
-                className={`w-full text-left px-4 py-2 rounded-lg mb-2 transition-all ${
+                className={`w-full text-left px-3 py-2 rounded-md text-sm transition-all ${
                   chat.id === chatId
-                    ? "bg-blue-600 font-semibold"
-                    : "hover:bg-blue-800/70"
+                    ? "bg-blue-600 text-white font-semibold"
+                    : "bg-zinc-800 hover:bg-zinc-700 text-gray-300"
                 }`}
               >
                 Chat {chat.id.slice(-4)}
@@ -230,7 +229,7 @@ export default function ChatPage() {
 
         <Button
           onClick={handleExitChat}
-          className="bg-red-600 hover:bg-red-700 text-white rounded-none flex items-center justify-center gap-2 py-3"
+          className="bg-red-600 hover:bg-red-700 text-white flex items-center justify-center gap-2 py-3 rounded-none"
         >
           <LogOut className="w-4 h-4" /> Sair
         </Button>
